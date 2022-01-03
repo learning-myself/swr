@@ -2,7 +2,7 @@ import useSWR from "swr";
 import mainApi from "../api";
 
 export default function useList() {
-  const { data, mutate, error } = useSWR(
+  const { data, mutate, error, isValidating } = useSWR(
     "getProducts",
     async () => {
       const { data } = await mainApi.get("products");
@@ -10,6 +10,7 @@ export default function useList() {
     },
     {
       revalidateOnFocus: false,
+      revalidateIfStale: false,
       // revalidateOnMount: false,
       // revalidateOnReconnect: false,
       // refreshWhenOffline: false,
@@ -19,9 +20,12 @@ export default function useList() {
     }
   );
 
+  // console.log(isValidating);
+
   return {
     data,
     mutate,
+    isValidating,
     error,
   };
 }
