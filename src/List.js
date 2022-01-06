@@ -1,6 +1,7 @@
 import { isArray } from "lodash";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import mainApi from "./api";
 import useList from "./hooks/useList";
 
 function List() {
@@ -8,20 +9,26 @@ function List() {
   const { data, error, isValidating, mutate } = useList();
   console.log(data, error?.response, isValidating);
 
-  const click = () => {
-    mutate(
-      "getProducts",
-      [
-        ...data,
-        {
-          id: "21",
-          name: "name 21",
-          price: 195,
-          status: false,
-        },
-      ],
-      false
-    );
+  const click = async () => {
+    // mutate(
+    //   [
+    //     ...data,
+    //     {
+    //       id: "21",
+    //       name: "name 21",
+    //       price: 195,
+    //       status: false,
+    //     },
+    //   ],
+    //   false
+    // );
+    await mainApi.post("products", {
+      id: "21",
+      name: "name 21",
+      price: 195,
+      status: false,
+    });
+    mutate();
   };
 
   const render = useMemo(() => {
